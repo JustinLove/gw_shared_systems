@@ -1,0 +1,19 @@
+{
+  "author": "wondible",
+  "build": "89755",
+  "category": ["galactic-war", "titans"],
+  "context": "client",
+  "date": "2016/03/15",
+  "description": "Uses System Sharing to populate new Galactic Wars.",
+  "display_name": "GW Shared Systems",
+  "forum": null,
+  "identifier": "com.wondible.pa.gw_shared_systems",
+  "priority": 100,
+  "scenes": {
+    "gw_start": [
+    ]
+  },
+  "signature": "not yet implemented",
+  "version": "0.1.0"
+}
+
