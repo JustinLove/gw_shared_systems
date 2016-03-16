@@ -1,7 +1,5 @@
 // !LOCNS:galactic_war
-model.cShareSystems_busy = ko.observable(false)
 define([
-  'coui://ui/mods/cShareSystems/cShareSystems.js'
 ], function () {
 
   /*
@@ -12,7 +10,7 @@ define([
         min = 0
         max = 0
         system.Planets.forEach(function(planet) {
-          if (planet.Biomes[0] != 0) {
+          if (planet.Biomes[0] != 'gas') {
             min += 4 * Math.PI * Math.pow(planet.Radius[0], 2)
             max += 4 * Math.PI * Math.pow(planet.Radius[1], 2)
           }
@@ -22,6 +20,7 @@ define([
     })
   })
   */
+
   var planet_template = {
     name: "Default Planet",
     mass: 5000,
@@ -80,7 +79,7 @@ define([
     "sort_direction": "DESC",
     "limit"			: 16
   }
-  var fetchLimit = 10
+  var fetchLimit = 780
 
   var searchSystems = function(parameters) {
     var request = $.Deferred()
@@ -152,7 +151,7 @@ define([
     */
 
     var generate = function(config) {
-      console.log('generate', config)
+      //console.log('generate', config)
       var rng = new Math.seedrandom(config.seed !== undefined ? config.seed : Math.random());
 
       var getRandomInt = function (min, max) {
@@ -195,8 +194,8 @@ define([
 
       var pickSystem = function(systems) {
         if (systems.length > 0) {
-          var min = config.players
-          var max = config.players*15
+          var min = config.players*0.5
+          var max = config.players*3
           var candidates = systems.filter(function(s) {
             return min < s.surface_area && s.surface_area < max
           })
