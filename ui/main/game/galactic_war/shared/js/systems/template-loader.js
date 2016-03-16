@@ -3,7 +3,8 @@ define([
   '/mods/gw_shared_systems/shared_systems.js',
   '/mods/gw_shared_systems/template_builder.js',
   '/main/shared/js/premade_systems.js',
-], function (sharedSystems, generateFromTemplate, premade) {
+  '/mods/gw_shared_systems/user_systems.js',
+], function (sharedSystems, generateFromTemplate, premade, user) {
 
   /*
   requireGW(['main/game/galactic_war/shared/js/systems/titans-normal'], function(temp) {
@@ -24,6 +25,23 @@ define([
   })
   */
 
+ var biomes = [
+  'earth', 'desert', 'lava', 'metal', 'moon', 'tropical', 'gas',
+  '1v1test', 'asteroid', 'csg_debug', 'ice_boss', 'metal_boss', 'sandbox',
+ ]
+
+ var blacklist = function(systems) {
+   return systems.filter(function(system) {
+     for (var i in system.planets) {
+       if (biomes.indexOf(system.planets[i].generator.biome) == -1) {
+         return false
+       }
+     }
+
+     return true
+   })
+ }
+
   var fixupPlanetConfig = function (system) {
     UberUtility.fixupPlanetConfig(system)
 
@@ -42,7 +60,8 @@ define([
     console.log('create')
     //var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
     var systemsLoaded = $.Deferred()
-    systemsLoaded.resolve(premade)
+    //systemsLoaded.resolve(premade)
+    systemsLoaded.resolve(user())
 
     /*
     systemsLoaded.then(function(sys) {
@@ -56,6 +75,7 @@ define([
       //console.log('generate', config)
 
       var pickSystem = function(systems) {
+        systems = blacklist(systems)
         //console.log(systems)
         var rng = new Math.seedrandom(config.seed !== undefined ? config.seed : Math.random());
 
