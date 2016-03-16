@@ -1,10 +1,11 @@
 // !LOCNS:galactic_war
 define([
   '/mods/gw_shared_systems/shared_systems.js',
+  '/mods/gw_shared_systems/map_packs.js',
   '/mods/gw_shared_systems/template_builder.js',
   '/main/shared/js/premade_systems.js',
   '/mods/gw_shared_systems/user_systems.js',
-], function (sharedSystems, generateFromTemplate, premade, user) {
+], function (sharedSystems, mapPacks, generateFromTemplate, premade, user) {
 
   /*
   requireGW(['main/game/galactic_war/shared/js/systems/titans-normal'], function(temp) {
@@ -61,7 +62,18 @@ define([
     //var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
     var systemsLoaded = $.Deferred()
     //systemsLoaded.resolve(premade)
-    systemsLoaded.resolve(user())
+    //systemsLoaded.resolve(user())
+    mapPacks.mapPackList().then(function(packs) {
+      $.when.apply($, Object.keys(packs).map(function(name) {
+        return mapPacks.loadPack(name)
+      })).then(function() {
+        if (arguments.length > 0) {
+          systemsLoaded.resolve(_.flatten(arguments))
+        } else {
+          systemsLoaded.reject()
+        }
+      })
+    })
 
     /*
     systemsLoaded.then(function(sys) {

@@ -20,7 +20,5 @@ define([
     systems.forEach(fixupPlanetConfig)
   })
 
-  window.userSystems = userSystems
-
   return userSystems
 });
