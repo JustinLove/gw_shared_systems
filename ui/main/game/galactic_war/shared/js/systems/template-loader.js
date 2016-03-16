@@ -2,7 +2,8 @@
 define([
   '/mods/gw_shared_systems/shared_systems.js',
   '/mods/gw_shared_systems/template_builder.js',
-], function (sharedSystems, generateFromTemplate) {
+  '/main/shared/js/premade_systems.js',
+], function (sharedSystems, generateFromTemplate, premade) {
 
   /*
   requireGW(['main/game/galactic_war/shared/js/systems/titans-normal'], function(temp) {
@@ -23,12 +24,28 @@ define([
   })
   */
 
+  var fixupPlanetConfig = function (system) {
+    UberUtility.fixupPlanetConfig(system)
+
+    system.surface_area = 0
+    system.planets.forEach(function(planet) {
+      if (planet.generator && planet.generator.biome != 'gas') {
+        system.surface_area += 4 * Math.PI * Math.pow(planet.generator.radius, 2) * 0.000001
+      }
+    })
+    return system;
+  }
+
+  premade.forEach(fixupPlanetConfig)
+
   var chooseStarSystemTemplates = function(content, easier) {
     console.log('create')
-    var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
+    //var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
+    var systemsLoaded = $.Deferred()
+    systemsLoaded.resolve(premade)
 
     /*
-    systemsLoaded = then(function(sys) {
+    systemsLoaded.then(function(sys) {
       console.log(sys.sort(function(a, b) {
         return a.surface_area - b.surface_area
       }).map(function(sys) {return Math.floor(sys.surface_area)}))
@@ -56,8 +73,8 @@ define([
             candidates = systems
           }
           var i = getRandomInt(0, candidates.length - 1)
-          //console.log(i, candidates.length)
-          //console.log('generate', candidates[i].surface_area)
+          console.log(i, candidates.length)
+          console.log('generate', candidates[i].surface_area)
           return candidates[i]
         }
       }
