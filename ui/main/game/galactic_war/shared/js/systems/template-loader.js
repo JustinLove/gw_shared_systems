@@ -205,7 +205,7 @@ define([
           var i = getRandomInt(0, candidates.length - 1)
           //console.log(i, candidates.length)
           //console.log('generate', candidates[i].surface_area)
-          return systems[i]
+          return candidates[i]
         }
       }
 
