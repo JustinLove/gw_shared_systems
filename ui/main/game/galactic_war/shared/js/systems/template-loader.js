@@ -41,6 +41,18 @@ define([
     }
   };
 
+  var fixupPlanetConfig = function (system) {
+    UberUtility.fixupPlanetConfig(system)
+
+    system.surface_area = 0
+    system.planets.forEach(function(planet) {
+      if (planet.generator && planet.generator.biome != 'gas') {
+        system.surface_area += 4 * Math.PI * Math.pow(planet.generator.radius, 2) * 0.000001
+      }
+    })
+    return system;
+  }
+
   var serverOptions = [
     {
       "name"		: "Default Server",
@@ -68,6 +80,7 @@ define([
     "sort_direction": "DESC",
     "limit"			: 16
   }
+  var fetchLimit = 10
 
   var searchSystems = function(parameters) {
     var request = $.Deferred()
@@ -86,35 +99,6 @@ define([
     return request
   }
 
-  var fixupPlanetConfig = function (system) {
-    var planets = system.planets || [];
-    system.surface_area = 0
-    for (var p = 0; p < planets.length; ++p)
-    {
-      var planet = planets[p];
-      if (planet.hasOwnProperty('position_x')) {
-        planet.position = [planet.position_x, planet.position_y];
-        delete planet.position_x;
-        delete planet.position_y;
-      }
-      if (planet.hasOwnProperty('velocity_x')) {
-        planet.velocity = [planet.velocity_x, planet.velocity_y];
-        delete planet.velocity_x;
-        delete planet.velocity_y;
-      }
-      //console.log(JSON.parse(JSON.stringify(planet, null, 0)))
-      if (planet.hasOwnProperty('planet')) {
-        if (planet.planet.biome != 'gas') {
-          system.surface_area += 4 * Math.PI * Math.pow(planet.planet.radius, 2) * 0.000001
-        }
-        planet.generator = planet.planet;
-        delete planet.planet;
-      }
-    }
-    return system;
-  }
-  
-
   var systemsLoaded
 
   var loadSystems = function() {
@@ -122,15 +106,14 @@ define([
       console.log('load')
       systemsLoaded = $.Deferred()
       var systems = []
-      var crazy = 0
       var next = function(start) {
         console.log('search', start)
         searchSystems($.extend({start: start}, filterOptions))
           .then(function(data) {
             //console.log(data)
             systems = systems.concat(data.systems)
-            if (++crazy >= 780/filterOptions.limit) {
-              console.warn('thats crazy')
+            if (systems.length >= fetchLimit) {
+              console.warn(systems.length, 'thats crazy')
               systemsLoaded.resolve(systems.map(fixupPlanetConfig))
               return
             }
@@ -142,9 +125,12 @@ define([
               return
             }
           }, function() {
-            // ends in 500?
             console.error('fetch failed', start)
-            systemsLoaded.resolve(systems.map(fixupPlanetConfig))
+            if (systems.length > 0) {
+              systemsLoaded.resolve(systems.map(fixupPlanetConfig))
+            } else {
+              systemsLoaded.reject(arguments)
+            }
           })
       }
       next(0)
@@ -155,8 +141,10 @@ define([
 
   var chooseStarSystemTemplates = function(content, easier) {
     console.log('create')
+    loadSystems()
+
     /*
-    loadSystems().then(function(sys) {
+    systemsLoaded.then(function(sys) {
       console.log(sys.sort(function(a, b) {
         return a.surface_area - b.surface_area
       }).map(function(sys) {return Math.floor(sys.surface_area)}))
