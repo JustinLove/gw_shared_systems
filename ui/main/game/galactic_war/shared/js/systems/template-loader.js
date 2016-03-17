@@ -82,7 +82,6 @@ define([
 
   var chooseStarSystemTemplates = function(content, easier) {
     console.log('create')
-    var choices = ['Uber', 'My Systems', 'Violet']
     var systemsLoaded = loadSelectedSources(choices)
 
     /*
@@ -135,7 +134,7 @@ define([
     };
   };
 
-  var options = [
+  var baseOptions = [
     {
       name: 'Uber',
       load: function() {
@@ -151,6 +150,9 @@ define([
   ]
 
   var loadOptions = function() {
+    var options = _.cloneDeep(baseOptions)
+    var serverPromise = $.Deferred(); serverPromise.resolve(true)
+    /*
     var serverPromise = sharedSystems.getServerList().then(function(servers) {
       servers.forEach(function(server) {
         options.push({
@@ -161,6 +163,7 @@ define([
         })
       })
     })
+    */
 
     var packPromise = mapPacks.mapPackList().then(function(packs) {
       Object.keys(packs).forEach(function(name) {
@@ -178,7 +181,13 @@ define([
     })
   }
 
+  var choices = []
+  var useSources = function(names) {
+    choices = names
+  }
+
   chooseStarSystemTemplates.loadOptions = loadOptions
+  chooseStarSystemTemplates.useSources = useSources
 
   return chooseStarSystemTemplates;
 });

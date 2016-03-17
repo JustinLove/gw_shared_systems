@@ -1,0 +1,31 @@
+.system-group input {
+  display: none;
+}
+
+.system-group label {
+  display: block;
+  width: 100;
+  padding-top: 2px;
+  padding-left: 2px;
+  background: #000000;
+  border: 1px solid #444;
+  color: #666;
+}
+
+.system-group label:hover {
+  background: #004400;
+  border: 1px solid #AAA;
+  color: #aaa
+}
+
+.system-group.selected label {
+  background: #007800;
+  border: 1px solid #AAA;
+  color: #eee
+}
+
+.system-group.selected label:hover {
+  background: #008C00;
+  border: 1px solid #FFF;
+  color: #fff
+}
