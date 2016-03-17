@@ -57,17 +57,18 @@ define([
 
   premade.forEach(fixupPlanetConfig)
 
-  var chooseStarSystemTemplates = function(content, easier) {
-    console.log('create')
-    //var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
-    //var systemsLoaded = $.Deferred()
-    //systemsLoaded.resolve(premade)
-    var systemsLoaded = user.load()
-    /*
-    mapPacks.mapPackList().then(function(packs) {
-      $.when.apply($, Object.keys(packs).map(function(name) {
-        return mapPacks.loadPack(name)
-      })).then(function() {
+  var loadSelectedSources = function(choices) {
+    var systemsLoaded = $.Deferred()
+
+    loadOptions().then(function(options) {
+      var loading = []
+      choices.forEach(function(name) {
+        var it = _.find(options, 'name', name)
+        if (it) {
+          loading.push(it.load())
+        }
+      })
+      $.when.apply($, loading).then(function() {
         if (arguments.length > 0) {
           systemsLoaded.resolve(_.flatten(arguments))
         } else {
@@ -75,7 +76,14 @@ define([
         }
       })
     })
-    */
+
+    return systemsLoaded
+  }
+
+  var chooseStarSystemTemplates = function(content, easier) {
+    console.log('create')
+    var choices = ['Uber', 'My Systems', 'Violet']
+    var systemsLoaded = loadSelectedSources(choices)
 
     /*
     systemsLoaded.then(function(sys) {
@@ -126,6 +134,51 @@ define([
       generate: generate
     };
   };
+
+  var options = [
+    {
+      name: 'Uber',
+      load: function() {
+        var promise = $.Deferred()
+        promise.resolve(premade)
+        return promise
+      },
+    },
+    {
+      name: 'My Systems',
+      load: user.load,
+    },
+  ]
+
+  var loadOptions = function() {
+    var serverPromise = sharedSystems.getServerList().then(function(servers) {
+      servers.forEach(function(server) {
+        options.push({
+          name: server.name,
+          load: function() {
+            return sharedSystems.loadSystems(server.search_url)
+          },
+        })
+      })
+    })
+
+    var packPromise = mapPacks.mapPackList().then(function(packs) {
+      Object.keys(packs).forEach(function(name) {
+        options.push({
+          name: name,
+          load: function() {
+            return mapPacks.loadPack(name)
+          },
+        })
+      })
+    })
+
+    return $.when(serverPromise, packPromise).then(function() {
+      return options
+    })
+  }
+
+  chooseStarSystemTemplates.loadOptions = loadOptions
 
   return chooseStarSystemTemplates;
 });

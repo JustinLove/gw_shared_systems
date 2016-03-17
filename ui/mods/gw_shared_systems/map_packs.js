@@ -55,7 +55,7 @@ define([
       return mapPacksLoaded
     }
     mapPacksLoaded = $.Deferred()
-    $.when((scene_mod_list.load_planet || []).map(function(path) {
+    $.when.apply($, (scene_mod_list.load_planet || []).map(function(path) {
       return $.get(path, null, null, 'text').then(function(contents) {
         if (contents.match(/cShareSystems.load_pas\s*\(/)) {
           var se = document.createElement('script');

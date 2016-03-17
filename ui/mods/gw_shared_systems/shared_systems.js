@@ -14,6 +14,8 @@ define([
     return system;
   }
 
+  var serverListUrl = "https://raw.githubusercontent.com/pamods/mods-conundrum/master/cShareSystems_serverList/serverlist.json";
+
   var serverOptions = [
     {
       "name"		: "Default Server",
@@ -23,13 +25,13 @@ define([
     }
   ]
 
-  var getServer = function() {
-    var server = decode(localStorage.getItem('cShareSystems_server'));
-    if(server)
-      return server;
-    else {
-      return serverOptions[0];
-    }
+  var getServerList = function() {
+    return $.getJSON(serverListUrl).then(function(data) {
+      if (!data || !data.servers) return;
+
+      serverOptions = data.servers
+      return serverOptions
+    });
   };
 
   var filterOptions = {
@@ -62,7 +64,7 @@ define([
   var systemsLoaded = {}
 
   var loadSystems = function(search_url, fetchLimit) {
-    search_url = search_url || getServer().search_url
+    search_url = search_url || serverOptions[0].search_url
     if (systemsLoaded[search_url]) {
       return systemsLoaded[search_url]
     }
@@ -102,7 +104,7 @@ define([
   }
 
   return {
-    getServer: getServer,
+    getServerList: getServerList,
     loadSystems: loadSystems,
   }
 });
