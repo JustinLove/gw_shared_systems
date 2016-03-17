@@ -20,5 +20,54 @@ define([
     systems.forEach(fixupPlanetConfig)
   })
 
-  return userSystems
+  var waitForPlanetToLoad = function (planet_spec) {
+    var deferred = $.Deferred();
+
+    UberUtility.waitForAttributeLoad(planet_spec, 'csg_key', 'planetCSG', constants.PLANET_CSG_DATABASE).then(function (first) {
+      UberUtility.waitForAttributeLoad(first, 'metal_spots_key', 'metal_spots', constants.PLANET_METAL_SPOTS_DATABASE).then(function (second) {
+        UberUtility.waitForAttributeLoad(second, 'landing_zones_key', 'landing_zones', constants.PLANET_LANDING_ZONES_DATABASE).then(function (third) {
+          _.omit(third, 'source');
+          deferred.resolve(third);
+        });;
+      });
+    });
+
+    return deferred.promise();
+  };
+
+  var waitForSystemToLoad = function (system, options /* { omit_keys } */) {
+    var deferred = $.Deferred();
+    var array = _.map(system.planets, waitForPlanetToLoad);
+
+    UberUtility.waitForAll(array).then(function (results) {
+      system.planets = results;
+
+      if (options.omit_keys)
+        system.planets = _.map(system.planets, function (element) {
+          return _.omit(element, ['csg_key', 'metal_spots_key', 'landing_zones_key']);
+        });
+
+        deferred.resolve(system);
+    });
+
+    return deferred.promise();
+  };
+
+  var systemsLoaded
+
+  var load = function() {
+    if (systemsLoaded) {
+      return systemsLoaded
+    }
+    systemsLoaded = $.Deferred()
+    $.when(userSystems().map(waitForSystemToLoad)).then(function() {
+      systemsLoaded.resolve(userSystems())
+    })
+    return systemsLoaded
+  }
+
+  return {
+    systems: userSystems,
+    load: load,
+  }
 });

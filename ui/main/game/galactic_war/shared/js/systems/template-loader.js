@@ -60,9 +60,10 @@ define([
   var chooseStarSystemTemplates = function(content, easier) {
     console.log('create')
     //var systemsLoaded = sharedSystems.loadSystems(sharedSystems.getServer().server_url, 10)
-    var systemsLoaded = $.Deferred()
+    //var systemsLoaded = $.Deferred()
     //systemsLoaded.resolve(premade)
-    //systemsLoaded.resolve(user())
+    var systemsLoaded = user.load()
+    /*
     mapPacks.mapPackList().then(function(packs) {
       $.when.apply($, Object.keys(packs).map(function(name) {
         return mapPacks.loadPack(name)
@@ -74,6 +75,7 @@ define([
         }
       })
     })
+    */
 
     /*
     systemsLoaded.then(function(sys) {
@@ -105,8 +107,8 @@ define([
             candidates = systems
           }
           var i = getRandomInt(0, candidates.length - 1)
-          console.log(i, candidates.length)
-          console.log('generate', candidates[i].surface_area)
+          //console.log(i, candidates.length)
+          //console.log('generate', candidates[i].surface_area)
           return candidates[i]
         }
       }
