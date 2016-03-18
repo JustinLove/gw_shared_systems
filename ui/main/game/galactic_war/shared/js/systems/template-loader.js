@@ -33,10 +33,19 @@ define([
 
  var blacklist = function(systems) {
    return systems.filter(function(system) {
+     var startingPlanets = 0
      for (var i in system.planets) {
-       if (biomes.indexOf(system.planets[i].generator.biome) == -1) {
+       var planet = system.planets[i]
+       if (planet.starting_planet) {
+         startingPlanets++
+       }
+       if (biomes.indexOf(planet.generator.biome) == -1) {
          return false
        }
+     }
+
+     if (startingPlanets < 1) {
+       system.planets.forEach(function(planet) {planet.starting_planet = true})
      }
 
      return true
