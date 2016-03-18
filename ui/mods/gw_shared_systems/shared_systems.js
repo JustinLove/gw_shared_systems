@@ -76,6 +76,10 @@ define([
     var systems = []
     progress(systems.length+'/'+fetchLimit)
     var next = function(start) {
+      if (search_url == defaultServer) {
+        //approximate number 2016-03-17
+        start = Math.floor(Math.random()*2600)
+      }
       console.log('search', start)
       searchSystems(search_url, $.extend({start: start}, filterOptions))
         .then(function(data) {
