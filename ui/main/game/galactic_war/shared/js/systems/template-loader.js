@@ -134,9 +134,11 @@ define([
     };
   };
 
+  var userProgress = ko.observable('')
   var baseOptions = [
     {
       name: 'Uber',
+      progress: ko.observable(premade.length.toString()),
       load: function() {
         var promise = $.Deferred()
         promise.resolve(premade)
@@ -145,40 +147,50 @@ define([
     },
     {
       name: 'My Systems',
-      load: user.load,
+      progress: userProgress,
+      load: function() {
+        return user.load(userProgress)
+      },
     },
   ]
 
+  var optionsPromise
+
   var loadOptions = function() {
+    if (optionsPromise) return optionsPromise
+
     var options = _.cloneDeep(baseOptions)
     var serverPromise = $.Deferred(); serverPromise.resolve(true)
-    /*
     var serverPromise = sharedSystems.getServerList().then(function(servers) {
       servers.forEach(function(server) {
+        var progress = ko.observable('')
         options.push({
           name: server.name,
+          progress: progress,
           load: function() {
-            return sharedSystems.loadSystems(server.search_url)
+            return sharedSystems.loadSystems(server.search_url, 200, progress)
           },
         })
       })
     })
-    */
 
     var packPromise = mapPacks.mapPackList().then(function(packs) {
       Object.keys(packs).forEach(function(name) {
+        var progress = ko.observable('')
         options.push({
           name: name,
+          progress: progress,
           load: function() {
-            return mapPacks.loadPack(name)
+            return mapPacks.loadPack(name, progress)
           },
         })
       })
     })
 
-    return $.when(serverPromise, packPromise).then(function() {
+    optionsPromise = $.when(serverPromise, packPromise).then(function() {
       return options
     })
+    return optionsPromise
   }
 
   var choices = []

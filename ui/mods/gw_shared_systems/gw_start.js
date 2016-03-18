@@ -17,7 +17,7 @@
       '<ul class="form-control" data-bind="foreach: systemSources">'+
         '<li class="system-group" data-bind="css: {selected: selected}">'+
           '<input type="checkbox" data-bind="attr: {id: id}, checked: selected"/>'+
-          '<label data-bind="attr: {for: id}, text: name">Name</label></li>'+
+          '<label data-bind="attr: {for: id}"><span data-bind="text:name">Name</span> <span data-bind="text:progress"></span></label></li>'+
       '</ul>'+
     '</div>')
 

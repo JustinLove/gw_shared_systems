@@ -55,12 +55,14 @@ define([
 
   var systemsLoaded
 
-  var load = function() {
+  var load = function(progress) {
     if (systemsLoaded) {
       return systemsLoaded
     }
+    progress('0/'+userSystems().length)
     systemsLoaded = $.Deferred()
     $.when(userSystems().map(waitForSystemToLoad)).then(function() {
+      progress(userSystems().length+'/'+userSystems().length)
       systemsLoaded.resolve(userSystems())
     })
     return systemsLoaded

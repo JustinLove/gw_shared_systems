@@ -21,14 +21,16 @@ define([
     mapPacks[tabName] = {files: fileArray, systems: [], promise: null}
   }
 
-  var loadPack = function(tabName) {
+  var loadPack = function(tabName, progress) {
     if (mapPacks[tabName].promise) {
       return mapPacks[tabName].promise
     }
     mapPacks[tabName].promise = $.Deferred()
     var fileArray = mapPacks[tabName].files
     var systems = mapPacks[tabName].systems
-    var counter = fileArray.length;
+    var counter = fileArray.length
+
+    progress('0/'+fileArray.length)
 
     for (arrayItem in fileArray) {
       var fileName = fileArray[arrayItem];
@@ -37,6 +39,8 @@ define([
         systems.push(data);
       }).always(function() {
         counter--;
+
+        progress(systems.length+'/'+fileArray.length)
 
         if (counter <= 0) {
           systems.forEach(fixupPlanetConfig)

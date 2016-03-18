@@ -16,6 +16,8 @@ define([
 
   var serverListUrl = "https://raw.githubusercontent.com/pamods/mods-conundrum/master/cShareSystems_serverList/serverlist.json";
 
+  var defaultServer = "http://1-dot-winged-will-482.appspot.com/search"
+
   var serverOptions = [
     {
       "name"		: "Default Server",
@@ -63,7 +65,7 @@ define([
 
   var systemsLoaded = {}
 
-  var loadSystems = function(search_url, fetchLimit) {
+  var loadSystems = function(search_url, fetchLimit, progress) {
     search_url = search_url || serverOptions[0].search_url
     if (systemsLoaded[search_url]) {
       return systemsLoaded[search_url]
@@ -72,14 +74,17 @@ define([
     console.log('load')
     var promise = systemsLoaded[search_url] = $.Deferred()
     var systems = []
+    progress(systems.length+'/'+fetchLimit)
     var next = function(start) {
       console.log('search', start)
       searchSystems(search_url, $.extend({start: start}, filterOptions))
         .then(function(data) {
           //console.log(data)
           systems = systems.concat(data.systems)
+          progress(systems.length+'/'+fetchLimit)
           if (systems.length >= fetchLimit) {
             console.warn(systems.length, 'thats crazy')
+            progress(systems.length+'/'+systems.length)
             promise.resolve(systems.map(fixupPlanetConfig))
             return
           }
@@ -87,14 +92,17 @@ define([
             next(start + filterOptions.limit)
           } else {
             console.log('no more', data.total)
+            progress(systems.length+'/'+systems.length)
             promise.resolve(systems.map(fixupPlanetConfig))
             return
           }
         }, function() {
           console.error('fetch failed', start)
           if (systems.length > 0) {
+            progress(systems.length+'/'+systems.length)
             promise.resolve(systems.map(fixupPlanetConfig))
           } else {
+            progress('0')
             promise.reject(arguments)
           }
         })
