@@ -50,7 +50,7 @@ define([
      }
 
      if (startingPlanets < 1) {
-       system.planets.forEach(function(planet) {planet.starting_planet = true})
+       system.planets[0].starting_planet = true
      }
 
      return true
