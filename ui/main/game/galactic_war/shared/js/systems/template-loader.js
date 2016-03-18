@@ -26,36 +26,38 @@ define([
   })
   */
 
- var biomes = [
-  'earth', 'desert', 'lava', 'metal', 'moon', 'tropical', 'gas',
-  '1v1test', 'asteroid', 'csg_debug', 'ice_boss', 'metal_boss', 'sandbox',
- ]
+  var biomes = [
+    'earth', 'desert', 'lava', 'metal', 'moon', 'tropical', 'gas',
+    '1v1test', 'asteroid', 'csg_debug', 'ice_boss', 'metal_boss', 'sandbox',
+  ]
 
- var blacklist = [
-   'flint and steel', // start planets immediately collide
- ]
+  var blacklist = [
+    'flint and steel', // start planets immediately collide
+  ]
 
- var withoutBrokenSystems = function(systems) {
-   return systems.filter(function(system) {
-     if (blacklist.indexOf(system.name) != -1) return false
-     var startingPlanets = 0
-     for (var i in system.planets) {
-       var planet = system.planets[i]
-       if (planet.starting_planet) {
-         startingPlanets++
-       }
-       if (biomes.indexOf(planet.generator.biome) == -1) {
-         return false
-       }
-     }
+  var withoutBrokenSystems = function(systems) {
+    return systems.filter(function(system) {
+      if (blacklist.indexOf(system.name) != -1) return false
+      var startingPlanets = 0
+      for (var i in system.planets) {
+        var planet = system.planets[i]
+        if (planet.starting_planet) {
+          startingPlanets++
+        }
+        if (biomes.indexOf(planet.generator.biome) == -1) {
+          return false
+        }
+      }
 
-     if (startingPlanets < 1) {
-       system.planets[0].starting_planet = true
-     }
+      if (startingPlanets < 1) {
+        system.planets[0].starting_planet = true
+      }
 
-     return true
-   })
- }
+      console.log(system)
+
+      return true
+    })
+  }
 
   var fixupPlanetConfig = function (system) {
     UberUtility.fixupPlanetConfig(system)
