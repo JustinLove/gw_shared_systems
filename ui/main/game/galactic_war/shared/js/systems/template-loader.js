@@ -6,7 +6,6 @@ define([
   '/main/shared/js/premade_systems.js',
   '/mods/gw_shared_systems/user_systems.js',
 ], function (sharedSystems, mapPacks, generateFromTemplate, premade, user) {
-
   /*
   requireGW(['main/game/galactic_war/shared/js/systems/titans-normal'], function(temp) {
     temp.forEach(function(set) {
@@ -52,8 +51,6 @@ define([
       if (startingPlanets < 1) {
         system.planets[0].starting_planet = true
       }
-
-      console.log(system)
 
       return true
     })
@@ -122,7 +119,7 @@ define([
 
         if (systems.length > 0) {
           var min = config.players*0.5
-          var max = config.players*3
+          var max = config.players*4
           var candidates = systems.filter(function(s) {
             return min < s.surface_area && s.surface_area < max
           })
