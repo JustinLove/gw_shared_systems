@@ -173,7 +173,7 @@ define([
     if (optionsPromise) return optionsPromise
 
     var options = _.cloneDeep(baseOptions)
-    var serverPromise = $.Deferred(); serverPromise.resolve(true)
+    //var serverPromise = $.Deferred(); serverPromise.resolve(true)
     var serverPromise = sharedSystems.getServerList().then(function(servers) {
       servers.forEach(function(server) {
         var progress = ko.observable('')
