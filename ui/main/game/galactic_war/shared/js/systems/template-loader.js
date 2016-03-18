@@ -31,8 +31,13 @@ define([
   '1v1test', 'asteroid', 'csg_debug', 'ice_boss', 'metal_boss', 'sandbox',
  ]
 
- var blacklist = function(systems) {
+ var blacklist = [
+   'flint and steel', // start planets immediately collide
+ ]
+
+ var withoutBrokenSystems = function(systems) {
    return systems.filter(function(system) {
+     if (blacklist.indexOf(system.name) != -1) return false
      var startingPlanets = 0
      for (var i in system.planets) {
        var planet = system.planets[i]
@@ -105,7 +110,7 @@ define([
       //console.log('generate', config)
 
       var pickSystem = function(systems) {
-        systems = blacklist(systems)
+        systems = withoutBrokenSystems(systems)
         //console.log(systems)
         var rng = new Math.seedrandom(config.seed !== undefined ? config.seed : Math.random());
 
