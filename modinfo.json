@@ -6,7 +6,7 @@
   "date": "2016/03/19",
   "description": "Uses System Sharing and map packs to populate new Galactic Wars.",
   "display_name": "GW Shared Systems",
-  "forum": null,
+  "forum": "https://forums.uberent.com/threads/rel-gw-shared-systems.71533/",
   "icon": "http://wondible.com/pa/icons/gw_shared_systems.png",
   "identifier": "com.wondible.pa.gw_shared_systems",
   "priority": 100,
@@ -17,6 +17,6 @@
     ]
   },
   "signature": "not yet implemented",
-  "version": "0.1.0"
+  "version": "1.0.0"
 }
 
