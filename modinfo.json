@@ -3,10 +3,11 @@
   "build": "89755",
   "category": ["galactic-war", "titans"],
   "context": "client",
-  "date": "2016/03/15",
-  "description": "Uses System Sharing to populate new Galactic Wars.",
+  "date": "2016/03/19",
+  "description": "Uses System Sharing and map packs to populate new Galactic Wars.",
   "display_name": "GW Shared Systems",
   "forum": null,
+  "icon": "http://wondible.com/pa/icons/gw_shared_systems.png",
   "identifier": "com.wondible.pa.gw_shared_systems",
   "priority": 100,
   "scenes": {
