@@ -70,14 +70,16 @@ define([
     }
     mapPacksLoaded = $.Deferred()
     $.when.apply($, (scene_mod_list.load_planet || []).map(function(path) {
-      return $.get(path, null, null, 'text').then(function(contents) {
+      var promise = $.Deferred()
+      $.get(path, null, null, 'text').then(function(contents) {
         if (contents.match(/cShareSystems.load_pas\s*\(/)) {
           var se = document.createElement('script');
           se.type = "text/javascript";
           se.text = contents;
           document.getElementsByTagName('head')[0].appendChild(se);
         }
-      })
+      }).done(function() {promise.resolve()})
+      return promise
     })).always(function() {
       mapPacksLoaded.resolve(mapPacks)
     })
