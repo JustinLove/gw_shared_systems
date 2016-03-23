@@ -30,23 +30,33 @@ define([
     var systems = mapPacks[tabName].systems
     var counter = fileArray.length
 
+    var done = function() {
+      counter--;
+
+      progress(systems.length+'/'+fileArray.length)
+
+      if (counter <= 0) {
+        systems.forEach(fixupPlanetConfig)
+        mapPacks[tabName].promise.resolve(systems)
+      }
+    }
+
     progress('0/'+fileArray.length)
 
     for (arrayItem in fileArray) {
       var fileName = fileArray[arrayItem];
-
-      $.getJSON(fileName, function(data) {
+      $.getJSON(fileName).then(function(data) {
         systems.push(data);
-      }).always(function() {
-        counter--;
-
-        progress(systems.length+'/'+fileArray.length)
-
-        if (counter <= 0) {
-          systems.forEach(fixupPlanetConfig)
-          mapPacks[tabName].promise.resolve(systems)
+        done()
+      }, function(xhr, err, ex) {
+        if (xhr.status == 404) {
+          $.getJSON(fileName.toLowerCase()).then(function(data) {
+            systems.push(data);
+          }).always(done)
+        } else {
+          done()
         }
-      });
+      })
     }
 
     return mapPacks[tabName].promise
