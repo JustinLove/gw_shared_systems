@@ -78,7 +78,7 @@ define([
           se.text = contents;
           document.getElementsByTagName('head')[0].appendChild(se);
         }
-      }).done(function() {promise.resolve()})
+      }).always(function() {promise.resolve()})
       return promise
     })).always(function() {
       mapPacksLoaded.resolve(mapPacks)
