@@ -3,7 +3,7 @@
   "build": "89755",
   "category": ["galactic-war", "titans"],
   "context": "client",
-  "date": "2016/03/23",
+  "date": "2016/03/25",
   "description": "Uses System Sharing and map packs to populate new Galactic Wars.",
   "display_name": "GW Shared Systems",
   "forum": "https://forums.uberent.com/threads/rel-gw-shared-systems.71533/",
