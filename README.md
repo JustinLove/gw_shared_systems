@@ -1,4 +1,4 @@
-# GW Shared Systems
+# Shared Systems for galactic war
 
 Uses System Sharing and map packs to populate new Galactic Wars.
 

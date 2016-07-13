@@ -1,11 +1,11 @@
 {
   "author": "wondible",
-  "build": "89755",
-  "category": ["galactic-war", "titans"],
+  "build": "94684",
+  "category": ["gw", "titans"],
   "context": "client",
-  "date": "2016/03/26",
+  "date": "2016/07/12",
   "description": "Uses System Sharing and map packs to populate new Galactic Wars.",
-  "display_name": "GW Shared Systems",
+  "display_name": "Shared Systems for galactic war",
   "forum": "https://forums.uberent.com/threads/rel-gw-shared-systems.71533/",
   "icon": "http://wondible.com/pa/icons/gw_shared_systems.png",
   "identifier": "com.wondible.pa.gw_shared_systems",
@@ -17,6 +17,6 @@
     ]
   },
   "signature": "not yet implemented",
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
 

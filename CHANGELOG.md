@@ -1,4 +1,8 @@
-# GW Shared Systems
+# Shared Systems for galactic war
+
+## 1.0.3
+
+- Update title and tags
 
 ## 1.0.2
 
