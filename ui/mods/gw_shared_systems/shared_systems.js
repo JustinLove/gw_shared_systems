@@ -2,6 +2,16 @@
 define([
 ], function () {
 
+  var countMultiplanet = function(systems) {
+    var multi = 0
+    systems.forEach(function(system) {
+      if (system.planets.length > 1) {
+        multi++
+      }
+    })
+    return " (" + multi + ")"
+  }
+
   var fixupPlanetConfig = function (system) {
     UberUtility.fixupPlanetConfig(system)
 
@@ -74,7 +84,7 @@ define([
     console.log('load')
     var promise = systemsLoaded[search_url] = $.Deferred()
     var systems = []
-    progress(systems.length+'/'+fetchLimit)
+    progress(systems.length+'/'+fetchLimit + countMultiplanet(systems))
     var next = function(start) {
       if (search_url == defaultServer) {
         //approximate number 2016-03-17
@@ -85,10 +95,10 @@ define([
         .then(function(data) {
           //console.log(data)
           systems = systems.concat(data.systems)
-          progress(systems.length+'/'+fetchLimit)
+          progress(systems.length+'/'+fetchLimit + countMultiplanet(systems))
           if (systems.length >= fetchLimit) {
             console.warn(systems.length, 'thats crazy')
-            progress(systems.length+'/'+systems.length)
+            progress(systems.length+'/'+systems.length + countMultiplanet(systems))
             promise.resolve(systems.map(fixupPlanetConfig))
             return
           }
@@ -96,14 +106,14 @@ define([
             next(start + filterOptions.limit)
           } else {
             console.log('no more', data.total)
-            progress(systems.length+'/'+systems.length)
+            progress(systems.length+'/'+systems.length + countMultiplanet(systems))
             promise.resolve(systems.map(fixupPlanetConfig))
             return
           }
         }, function() {
           console.error('fetch failed', start)
           if (systems.length > 0) {
-            progress(systems.length+'/'+systems.length)
+            progress(systems.length+'/'+systems.length + countMultiplanet(systems))
             promise.resolve(systems.map(fixupPlanetConfig))
           } else {
             progress('0')

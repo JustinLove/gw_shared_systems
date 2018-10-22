@@ -2,6 +2,16 @@
 define([
 ], function () {
 
+  var countMultiplanet = function(systems) {
+    var multi = 0
+    systems.forEach(function(system) {
+      if (system.planets.length > 1) {
+        multi++
+      }
+    })
+    return " (" + multi + ")"
+  }
+
   var fixupPlanetConfig = function (system) {
     UberUtility.fixupPlanetConfig(system)
 
@@ -33,7 +43,7 @@ define([
     var done = function() {
       counter--;
 
-      progress(systems.length+'/'+fileArray.length)
+      progress(systems.length+'/'+fileArray.length + countMultiplanet(systems))
 
       if (counter <= 0) {
         systems.forEach(fixupPlanetConfig)

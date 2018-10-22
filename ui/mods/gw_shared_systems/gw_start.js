@@ -13,7 +13,7 @@
 
   $('#new-game-right .col-padding').append(
     '<div class="form-group">'+
-      '<label id="system-sources-label" for="system-sources"><loc>Systems</loc></label>'+
+      '<label id="system-sources-label" for="system-sources"><loc>Systems (multiplanet)</loc></label>'+
       '<ul class="form-control" data-bind="foreach: systemSources">'+
         '<li class="system-group" data-bind="css: {selected: selected}">'+
           '<input type="checkbox" data-bind="attr: {id: id}, checked: selected"/>'+

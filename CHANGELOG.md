@@ -3,6 +3,8 @@
 ## 1.1.0
 
 - Add a loading indicator to system groups to better indicate why Go To War is disabled
+- Add an icon to remote systems that may take a bit to download
+- Added count of multiplanet systems in parenthesis
 
 ## 1.0.3
 

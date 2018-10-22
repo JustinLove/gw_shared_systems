@@ -2,6 +2,16 @@
 define([
 ], function () {
 
+  var countMultiplanet = function(systems) {
+    var multi = 0
+    systems.forEach(function(system) {
+      if (system.planets.length > 1) {
+        multi++
+      }
+    })
+    return " (" + multi + ")"
+  }
+
   var fixupPlanetConfig = function (system) {
     UberUtility.fixupPlanetConfig(system)
 
@@ -62,7 +72,7 @@ define([
     progress('0/'+userSystems().length)
     systemsLoaded = $.Deferred()
     $.when(userSystems().map(waitForSystemToLoad)).then(function() {
-      progress(userSystems().length+'/'+userSystems().length)
+      progress(userSystems().length+'/'+userSystems().length + countMultiplanet(userSystems()))
       systemsLoaded.resolve(userSystems())
     })
     return systemsLoaded

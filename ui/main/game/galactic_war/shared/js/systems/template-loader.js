@@ -44,6 +44,16 @@ define([
     }),
   ]
 
+  var countMultiplanet = function(systems) {
+    var multi = 0
+    systems.forEach(function(system) {
+      if (system.planets.length > 1) {
+        multi++
+      }
+    })
+    return " (" + multi + ")"
+  }
+
   var withoutBrokenSystems = function(systems) {
     return systems.filter(function(system) {
       if (nameBlacklist.indexOf(system.name) != -1) return false
@@ -173,7 +183,7 @@ define([
     {
       name: 'Uber',
       remote: false,
-      progress: ko.observable(premade.length.toString()),
+      progress: ko.observable(premade.length.toString() + countMultiplanet(premade)),
       loading: ko.observable(false),
       load: function() {
         var promise = $.Deferred()
