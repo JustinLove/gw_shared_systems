@@ -172,6 +172,7 @@ define([
   var baseOptions = [
     {
       name: 'Uber',
+      remote: false,
       progress: ko.observable(premade.length.toString()),
       loading: ko.observable(false),
       load: function() {
@@ -182,6 +183,7 @@ define([
     },
     {
       name: 'My Systems',
+      remote: false,
       progress: userProgress,
       loading: ko.observable(false),
       load: function() {
@@ -202,6 +204,7 @@ define([
         var progress = ko.observable('')
         options.push({
           name: server.name,
+          remote: true,
           progress: progress,
           loading: ko.observable(false),
           load: function() {
@@ -216,6 +219,7 @@ define([
         var progress = ko.observable('')
         options.push({
           name: name,
+          remote: false,
           progress: progress,
           loading: ko.observable(false),
           load: function() {

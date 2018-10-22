@@ -10,6 +10,7 @@
   background: #000000;
   border: 1px solid #444;
   color: #666;
+  position: relative;
 }
 
 .system-group label:hover {
@@ -34,4 +35,11 @@
   width: 18px;
   height: 18px;
   margin: 0;
+}
+
+.system-group-remote {
+  width: 18px;
+  height: 18px;
+  display: block;
+  float: right;
 }

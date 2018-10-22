@@ -17,7 +17,7 @@
       '<ul class="form-control" data-bind="foreach: systemSources">'+
         '<li class="system-group" data-bind="css: {selected: selected}">'+
           '<input type="checkbox" data-bind="attr: {id: id}, checked: selected"/>'+
-          '<label data-bind="attr: {for: id}"><span data-bind="text:name">Name</span> <span data-bind="text:progress"></span><img class="system-group-loading-indicator working" data-bind="visible:loading" src="coui://ui/main/shared/img/working.svg"></label></li>'+
+          '<label data-bind="attr: {for: id}"><span data-bind="text:name">Name</span> <img class="system-group-remote" data-bind="visible:remote" src="coui://ui/mods/gw_shared_systems/cloud-download.svg"> <span data-bind="text:progress"></span><img class="system-group-loading-indicator working" data-bind="visible:loading" src="coui://ui/main/shared/img/working.svg"></label></li>'+
       '</ul>'+
     '</div>')
 
