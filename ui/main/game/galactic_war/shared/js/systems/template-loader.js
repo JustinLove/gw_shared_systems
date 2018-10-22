@@ -98,7 +98,8 @@ define([
       choices.forEach(function(name) {
         var it = _.find(options, 'name', name)
         if (it) {
-          loading.push(it.load())
+          it.loading(true)
+          loading.push(it.load().always(function() {it.loading(false)}))
         }
       })
       $.when.apply($, loading).then(function() {
@@ -172,6 +173,7 @@ define([
     {
       name: 'Uber',
       progress: ko.observable(premade.length.toString()),
+      loading: ko.observable(false),
       load: function() {
         var promise = $.Deferred()
         promise.resolve(premade)
@@ -181,6 +183,7 @@ define([
     {
       name: 'My Systems',
       progress: userProgress,
+      loading: ko.observable(false),
       load: function() {
         return user.load(userProgress)
       },
@@ -200,6 +203,7 @@ define([
         options.push({
           name: server.name,
           progress: progress,
+          loading: ko.observable(false),
           load: function() {
             return sharedSystems.loadSystems(server.search_url, 200, progress)
           },
@@ -213,6 +217,7 @@ define([
         options.push({
           name: name,
           progress: progress,
+          loading: ko.observable(false),
           load: function() {
             return mapPacks.loadPack(name, progress)
           },

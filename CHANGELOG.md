@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.1.0
+
+- Add a loading indicator to system groups to better indicate why Go To War is disabled
+
 ## 1.0.3
 
 - Update title and tags

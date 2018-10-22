@@ -29,3 +29,9 @@
   border: 1px solid #FFF;
   color: #fff
 }
+
+.system-group-loading-indicator {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
