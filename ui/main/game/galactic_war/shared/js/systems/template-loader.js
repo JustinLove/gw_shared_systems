@@ -32,6 +32,7 @@ define([
 
   var nameBlacklist = [
     'flint and steel', // start planets immediately collide
+    'Molten Metal', // bugged pathing, no metal
   ]
 
   var complexBlacklist = [
