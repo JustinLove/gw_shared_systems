@@ -2,7 +2,8 @@
 
 ## 1.1.1
 
-- deselect a server if system fetch fails, to prevent Go to War from getting left disabled
+- Deselect a server if system fetch fails, to prevent Go to War from getting left disabled
+- Tooltips for remote icon and progress to explain multiplanet
 
 ## 1.1.0
 
