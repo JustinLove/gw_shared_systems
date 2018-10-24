@@ -110,7 +110,10 @@ define([
         var it = _.find(options, 'name', name)
         if (it) {
           it.loading(true)
-          loading.push(it.load().always(function() {it.loading(false)}))
+          loading.push(it.load()
+                        .always(function() {it.loading(false)})
+                        .fail(function() { if (it.selected) {it.selected(false)}})
+                      )
         }
       })
       $.when.apply($, loading).then(function() {

@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.1.1
+
+- deselect a server if system fetch fails, to prevent Go to War from getting left disabled
+
 ## 1.1.0
 
 - Add a loading indicator to system groups to better indicate why Go To War is disabled
