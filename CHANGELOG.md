@@ -1,7 +1,8 @@
 # Shared Systems for galactic war
 
-## 1.1.1
+## 1.2.0
 
+- Remember selected system groups
 - Deselect a server if system fetch fails, to prevent Go to War from getting left disabled
 - Tooltips for remote icon and progress to explain multiplanet
 

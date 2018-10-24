@@ -1,6 +1,8 @@
 (function() {
   model.systemSources = ko.observableArray([])
 
+  model.persistedNames = ko.observable(["Uber"]).extend({local: 'gw_shared_systems_persisted_names'})
+
   model.selectedNames = ko.computed(function() {
     var names = []
     model.systemSources().forEach(function(opt) {
@@ -33,10 +35,11 @@
         chooseStarSystemTemplates.useSources(names)
         // force game build
         model.newGameSeed(Math.floor(Math.random() * 1000000).toString());
+        model.persistedNames(names)
       })
 
       options.forEach(function(opt, i) {
-        opt.selected = ko.observable(i == 0)
+        opt.selected = ko.observable(model.persistedNames().indexOf(opt.name) != -1)
         opt.id = 'system-group-'+i
       })
       model.systemSources(options)
