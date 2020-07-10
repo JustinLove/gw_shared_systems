@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.2.1
+
+- Return a unique object from premade systems to prevent overwrite from the system being selected mutliple times.
+
 ## 1.2.0
 
 - Remember selected system groups
