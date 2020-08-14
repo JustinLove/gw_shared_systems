@@ -36,6 +36,10 @@ define([
 
     var cSys = _.cloneDeep(config.template);
     rSystem.planets = _.map(cSys.Planets, function(plnt, index) {
+      //console.log(plnt);
+      if (plnt.isExplicit) {
+        return _.cloneDeep(plnt);
+      }
       var bp = _.cloneDeep(planet_template);
       bp.generator.seed = getRandomInt(0, 32767);
       bp.generator.biome = _.sample(plnt.Biomes);

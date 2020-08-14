@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.2.2
+
+- Handle explicit planets included in system templates, which may occur due to other mods, e.g. Galactic War AI Overhaul.
+
 ## 1.2.1
 
 - Return a unique object from premade systems to prevent overwrite from the system being selected mutliple times.

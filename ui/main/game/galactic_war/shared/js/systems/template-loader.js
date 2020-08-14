@@ -129,7 +129,7 @@ define([
   }
 
   var chooseStarSystemTemplates = function(content, easier) {
-    console.log('create')
+    //console.log('create')
     var systemsLoaded = loadSelectedSources(choices)
 
     /*
