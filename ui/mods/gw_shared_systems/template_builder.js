@@ -37,6 +37,13 @@ define([
     var cSys = _.cloneDeep(config.template);
     rSystem.planets = _.map(cSys.Planets, function(plnt, index) {
       //console.log(plnt);
+      if (plnt.fromRandomList && plnt.fromRandomList.planets) {
+        var choice = _.cloneDeep(plnt.fromRandomList.planets[getRandomInt(0, plnt.fromRandomList.planets.length-1)])
+        var overrides = _.cloneDeep(plnt)
+        delete overrides.fromRandomList
+        _.assign(choice, overrides)
+        plnt = choice
+      }
       if (plnt.isExplicit) {
         return _.cloneDeep(plnt);
       }
