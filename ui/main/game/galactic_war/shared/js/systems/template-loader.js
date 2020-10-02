@@ -33,6 +33,7 @@ define([
   var nameBlocklist = [
     'flint and steel', // start planets immediately collide
     'Molten Metal', // bugged pathing, no metal
+    'Water World', // reported to have no spawn locations
   ]
 
   var complexBlocklist = [
@@ -60,12 +61,6 @@ define([
       if (nameBlocklist.indexOf(system.name) != -1) return false
       for (var b in complexBlocklist) {
         if (complexBlocklist[b](system)) return false
-      }
-
-      if (system.name == 'Gamma System') {
-        if (system.planets[0].name == 'Footfall' && system.planets[1].name == 'Mariani') {
-          return false
-        }
       }
 
       var startingPlanets = 0

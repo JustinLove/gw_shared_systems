@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.2.4
+
+- Add "Water World" to the list of broken systems
+
 ## 1.2.3
 
 - Partial support for fromRandomList, as used in Galactic War AI Overhaul
