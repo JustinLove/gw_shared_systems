@@ -30,12 +30,12 @@ define([
     '1v1test', 'asteroid', 'csg_debug', 'ice_boss', 'metal_boss', 'sandbox',
   ]
 
-  var nameBlacklist = [
+  var nameBlocklist = [
     'flint and steel', // start planets immediately collide
     'Molten Metal', // bugged pathing, no metal
   ]
 
-  var complexBlacklist = [
+  var complexBlocklist = [
     _.matches({ // all planets immediately collide
       creator: 'octobomb',
       planets: [
@@ -57,9 +57,9 @@ define([
 
   var withoutBrokenSystems = function(systems) {
     return systems.filter(function(system) {
-      if (nameBlacklist.indexOf(system.name) != -1) return false
-      for (var b in complexBlacklist) {
-        if (complexBlacklist[b](system)) return false
+      if (nameBlocklist.indexOf(system.name) != -1) return false
+      for (var b in complexBlocklist) {
+        if (complexBlocklist[b](system)) return false
       }
 
       if (system.name == 'Gamma System') {
