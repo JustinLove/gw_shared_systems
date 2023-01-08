@@ -1,5 +1,9 @@
 # Shared Systems for galactic war
 
+## 1.2.5
+
+- Rework system loading to better support map packs with asynchronous loading of system lists
+
 ## 1.2.4
 
 - Add "Water World" to the list of broken systems

@@ -28,7 +28,16 @@ define([
 
   window.cShareSystems = window.cShareSystems || {}
   cShareSystems.load_pas = function(tabName, fileArray) {
-    mapPacks[tabName] = {files: fileArray, systems: [], promise: null}
+    if (mapPacks[tabName]) {
+      mapPacks[tabName].files = fileArray
+    } else {
+      mapPacks[tabName] = {
+        files: fileArray,
+        requested: [],
+        systems: [],
+        promise: null
+      }
+    }
   }
 
   var loadPack = function(tabName, progress) {
@@ -36,38 +45,49 @@ define([
       return mapPacks[tabName].promise
     }
     mapPacks[tabName].promise = $.Deferred()
-    var fileArray = mapPacks[tabName].files
-    var systems = mapPacks[tabName].systems
-    var counter = fileArray.length
+    var loadFiles = function() {
+      var fileArray = mapPacks[tabName].files
+      var fileCountSnapshot = fileArray.length
+      if (fileCountSnapshot < 1) return setTimeout(loadFiles, 1000)
+      var requested = mapPacks[tabName].requested
+      var systems = mapPacks[tabName].systems
+      var counter = 0
 
-    var done = function() {
-      counter--;
+      var done = function() {
+        counter--;
 
-      progress(systems.length+'/'+fileArray.length + countMultiplanet(systems))
+        progress(systems.length+'/'+fileCountSnapshot + countMultiplanet(systems))
 
-      if (counter <= 0) {
-        systems.forEach(fixupPlanetConfig)
-        mapPacks[tabName].promise.resolve(systems)
+        if (counter <= 0) {
+          if (mapPacks[tabName].files.length > fileCountSnapshot) return setTimeout(loadFiles, 1000)
+          systems.forEach(fixupPlanetConfig)
+          mapPacks[tabName].promise.resolve(systems)
+        }
+      }
+
+      progress('0/'+fileCountSnapshot)
+
+      for (arrayItem in fileArray) {
+        if (requested[arrayItem]) continue;
+        requested[arrayItem] = true;
+        counter++
+        var fileName = fileArray[arrayItem];
+        $.getJSON(fileName).then(function(data) {
+          systems.push(data);
+          done()
+        }, function(xhr, err, ex) {
+          if (xhr.status == 404) {
+            $.getJSON(fileName.toLowerCase()).then(function(data) {
+              systems.push(data);
+            }).always(done)
+          } else {
+            done()
+          }
+        })
       }
     }
 
-    progress('0/'+fileArray.length)
-
-    for (arrayItem in fileArray) {
-      var fileName = fileArray[arrayItem];
-      $.getJSON(fileName).then(function(data) {
-        systems.push(data);
-        done()
-      }, function(xhr, err, ex) {
-        if (xhr.status == 404) {
-          $.getJSON(fileName.toLowerCase()).then(function(data) {
-            systems.push(data);
-          }).always(done)
-        } else {
-          done()
-        }
-      })
-    }
+    loadFiles()
 
     return mapPacks[tabName].promise
   };
